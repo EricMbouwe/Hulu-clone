@@ -1,9 +1,12 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import Header from '../components/Header'
-import Navbar from '../components/Navbar'
+import Head from 'next/head';
+import Header from '../components/Header';
+import Navbar from '../components/Navbar';
+import Result from '../components/Result';
+// import requests from '../utils/requests';
 
-export default function Home() {
+export default function Home({ results }) {
+  console.log(results);
+
   return (
     <div>
       <Head>
@@ -16,6 +19,27 @@ export default function Home() {
       {/**navbar*/}
       <Navbar />
       {/**content*/}
+      <Result results={results} />
     </div>
-  )
+  );
+}
+
+export async function getServerSideProps(context) {
+  //const genre = context.query.genre;
+
+  //const request = await fetch(
+  // `https://api.themoviedb.org/3/${
+  //    requests[genre]?.url || requests.fetchTrendings.url
+  //  }`,
+  //).then((res) => res.json());
+
+  const request = await fetch(
+    'https://api.themoviedb.org/3/movie/550?api_key=fdfa246ca26ed7a3a5ca359b0cff163c',
+  ).then((res) => res.json());
+
+  return {
+    props: {
+      results: request.results || null,
+    },
+  };
 }
