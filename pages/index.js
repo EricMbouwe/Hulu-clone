@@ -33,13 +33,18 @@ export async function getServerSideProps(context) {
   //  }`,
   //).then((res) => res.json());
 
-  const request = await fetch(
-    'https://api.themoviedb.org/3/movie/550?api_key=fdfa246ca26ed7a3a5ca359b0cff163c',
-  ).then((res) => res.json());
+  const res = await fetch('https://api.themoviedb.org/3/movie/550?api_key=fdfa246ca26ed7a3a5ca359b0cff163c');
+  const data = await res.json();
+
+  if (!data) {
+    return {
+      notFound: true,
+    }
+  }
 
   return {
     props: {
-      results: request.results || null,
+      results: data.results || null,
     },
   };
 }
